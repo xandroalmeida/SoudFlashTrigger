@@ -46,8 +46,14 @@ void appLoop_DisplayTask(void) {
 	while (true) {
 		display_buffer[0] = CARACTER_0;
 		display_buffer[1] = CARACTER_1;
-		display_buffer[0] = CARACTER_3;
-		display_buffer[1] = CARACTER_4;
+		display_buffer[2] = CARACTER_2;
+		display_buffer[3] = CARACTER_3;
 		taskDelayFromNow(20);
+		display_buffer[0] = CARACTER_4;
+		display_buffer[1] = CARACTER_5;
+		display_buffer[2] = CARACTER_6;
+		display_buffer[3] = CARACTER_7;
+		taskDelayFromNow(20);
+
 	}
 }
