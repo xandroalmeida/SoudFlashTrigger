@@ -1,7 +1,5 @@
 /*
- * Femto OS v 0.92 - Copyright (C) 2008-2010 Ruud Vlaming
- *
- * This file is part of the Femto OS distribution.
+ * SoundFlashTrigger - Copyright (C) 2011 Alexandr Dias de Almeida
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,28 +20,10 @@
  * See http://www.femtoos.org/ for details.
  */
 
-
-/* This file is solely for demonstration purposes.
- *
- *  Interrupts can for example be used to resume tasks that are waiting for
- *  a particular event to happen before they can run. Since interrupts can
- *  not be nested, the preferred way to handle external events is to start a
- *  high priority task by an interrupt and let the task take further action.
- *  Well, in fact interrupts could be nested, but this would take an excessive
- *  amount of ram, so we do not want to make use of it.
- *
- *  The interrupt pin drives a 4 bit counter. The value of the counter
- *  determines which leds are allowed to flash. If led Px4 is on, the blinker on
- *  Px0 is allowed to run, otherwise it is resumed. The way this works in detail
- *  depends on and varies with the setting of the configuration parameters.
- *
- *  Note that use for different devices requires different connection to the
- *  switches, because the location of INT0 cannot be altered by software.
- */
-
-
 /* This this the only include needed in your code .*/
 #include "femtoos_code.h"
+#include "common.h"
+
 
 /* Different delays for the blinkers. */
 #define delay03  2229U
@@ -53,88 +33,32 @@
 
 /* This is called once at system boot, and before the creating of any of
  * the tasks. Use it to initialize the hardware. */
-void appBoot(void)
-{ devLedDRR  = 0xFF;
-  devLedPORT = 0x0F;
-  devSwitchDRR = 0x00;
-  devEIR = preBitSet1(0x00,devINT); }
+void appBoot(void) {
 
+	DDRB = BIT7 + BIT6 + BIT5 + BIT4 + BIT3 + BIT2 + BIT1 + BIT0;
+	DDRC = BIT5 + BIT4 + BIT3 + BIT2 + BIT1;
 
-/* Different options to play with. Vary this and the cfgIntOsProtected too.
- * See the different results. */
-#define smallISR  cfgTrue
+	display_init();
+}
 
-/* Protected acces to the display. */
-static void setLed(Tuint08 lednr, Tbool state)
-{ taskEnterGlobalCritical();
-  if (state) { devLedPORT |= (1 << lednr); }  else { devLedPORT &=  ~(1 << lednr); }
-  taskExitGlobalCritical(); }
+void appTick00(void) {
+	display_refresh();
+}
 
+void appTick08(void) {
 
-/* Four blinker tasks that run independently. */
+}
 
-void appLoop_LEDtask0(void)
-{ Tuint08 led  = false;
-  while (true)
-  { led = !led;
-    setLed(0,led);
-    taskDelayFromNow(delay00); } }
+void HandleAdc(void) __attribute__ ( ( signal ) );
+void HandleAdc(void) {
+	devLedPORT = ~(~devLedPORT + 0x10);
+}
 
-void appLoop_LEDtask1(void)
-{ Tuint08 led  = false;
-  while (true)
-  { led = !led;
-    setLed(1,led);
-    taskDelayFromNow(delay01); } }
-
-void appLoop_LEDtask2(void)
-{ Tuint08 led  = false;
-  while (true)
-  { led = !led;
-    setLed(2,led);
-    taskDelayFromNow(delay02); } }
-
-void appLoop_LEDtask3(void)
-{ Tuint08 led  = false;
-  while (true)
-  { led = !led;
-    setLed(3,led);
-    taskDelayFromNow(delay03); } }
-
-
-/* The signal attribute makes sure all registers are properly restored.
- * Unfortunately it also stores registers never used, such as r0,r1.
- * Further it returns with a reti, where is should be a ret. Therefore
- * we must immediately disable interrupts again after return.
- * If you program this assembler all these problems are absent. ;-)
- * The compiler complains you misspelled your function, now did you?
- */
-
-  void HandlePinChange(void) __attribute__ ( ( signal ) );
-  void HandlePinChange(void)
-  { devLedPORT =  ~(~devLedPORT + 0x10); }
-
-  void devSigExternalInt(void) __attribute__ ( ( signal, naked, used, externally_visible ) );
-  void devSigExternalInt(void)
-  { isrBegin();
-    /* make sure do not use any registers here, there is nothing to protect you from
-     * bizarre results. */
-    HandlePinChange();
-    taskDisableGlobalInterrupts();
-    isrEndReturn();
-  }
-
-  void HandleAdc(void) __attribute__ ( ( signal ) );
-  void HandleAdc(void)
-  { devLedPORT =  ~(~devLedPORT + 0x10); }
-
-  void SIG_ADC(void) __attribute__ ( ( signal, naked, used, externally_visible ) );
-  void SIG_ADC(void)
-  {
-	  isrBegin();
-	  HandleAdc();
-	  taskDisableGlobalInterrupts();
-	  isrEndReturn();
-  }
-
+void SIG_ADC(void) __attribute__ ( ( signal, naked, used, externally_visible ) );
+void SIG_ADC(void) {
+	isrBegin();
+	HandleAdc();
+	taskDisableGlobalInterrupts();
+	isrEndReturn();
+}
 

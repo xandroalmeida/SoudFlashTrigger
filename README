@@ -1,0 +1,1 @@
+sudo avrdude -v -c usbtiny -patmega8 -U flash:w:./SoudFlashTrigger/Standard/main.hex

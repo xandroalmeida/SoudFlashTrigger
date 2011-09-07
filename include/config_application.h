@@ -8,6 +8,7 @@
  * the Free Software Foundation, version 3 of the License.
  *
  * This program is distributed in the hope that it will be useful,
+ *
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -56,7 +57,7 @@
 #define  cfgIntGlobalOnly                        cfgFalse
 #define  cfgIntUserDefined                       cfgTrue
 #define  cfgIntSwitchUsesOSstack                 cfgFalse
-#define  cfgIntOsProtected                       cfgFalse
+#define  cfgIntOsProtected                       cfgTrue
 #define  cfgIntTickTrack                         cfgFalse
 #define  cfgIntManualTicks                       cfgFalse
 
@@ -104,7 +105,7 @@
 #define  cfgUseFileSystemConcurrentRead          cfgFalse
 #define  cfgUseFileSystemEconomyMode             cfgFalse
 #define  cfgUseFileSystemMaintainFAT             cfgFalse
-#define  cfgUseEvents                            cfgFalse
+#define  cfgUseEvents                            cfgTrue
 #define  cfgUseEventsOnVariables                 cfgFalse
 
 
@@ -125,8 +126,8 @@
 /* EXTERNAL CALLS ========================================================== */
 /* ========================================================================= */
 
-#define  callAppTick00                           cfgFalse
-#define  callAppTick08                           cfgFalse
+#define  callAppTick00                           cfgTrue
+#define  callAppTick08                           cfgTrue
 #define  callAppTick16                           cfgFalse
 #define  callAppTickSleep                        cfgFalse
 #define  callAppEnterIdle                        cfgFalse
@@ -169,9 +170,9 @@
 #define  includeGenPassFlashString               cfgFalse
 
 /* Event functions --------------------------------------------------------- */
-#define  includeTaskWaitForEvents                cfgFalse
-#define  includeIsrFireEvent                     cfgFalse
-#define  includeGenFireEvent                     cfgFalse
+#define  includeTaskWaitForEvents                cfgTrue
+#define  includeIsrFireEvent                     cfgTrue
+#define  includeGenFireEvent                     cfgTrue
 #define  includeGenFireEventSet                  cfgFalse
 #define  includeGenCountEventBlocks              cfgFalse
 
@@ -232,30 +233,21 @@
 /* TASK NAMES ============================================================== */
 /* ========================================================================= */
 
-#define  CN_00                                   LEDtask0
-#define  CN_01                                   LEDtask1
-#define  CN_02                                   LEDtask2
-#define  CN_03                                   LEDtask3
+#define  CN_00                                   DisplayTask
 
 
 /* ========================================================================= */
 /* INCLUDE TASKS =========================================================== */
 /* ========================================================================= */
 
-#define  TaskInclude_LEDtask0                    cfgStartRunning
-#define  TaskInclude_LEDtask1                    cfgStartRunning
-#define  TaskInclude_LEDtask2                    cfgStartRunning
-#define  TaskInclude_LEDtask3                    cfgStartRunning
+#define  TaskInclude_DisplayTask                 cfgStartRunning
 
 
 /* ========================================================================= */
 /* TASK CAPABILITIES ======================================================= */
 /* ========================================================================= */
 
-#define  Capabilities_LEDtask0                   cfgCapDelay
-#define  Capabilities_LEDtask1                   cfgCapDelay
-#define  Capabilities_LEDtask2                   cfgCapDelay
-#define  Capabilities_LEDtask3                   cfgCapDelay
+#define  Capabilities_DisplayTask                cfgCapDelay
 
 
 /* ========================================================================= */
@@ -266,10 +258,7 @@
 #define  StackSizeOS                             30
 #define  StackSizeISR                            50
 #define  StackSizeShared                         0
-#define  StackSize_LEDtask0                      40
-#define  StackSize_LEDtask1                      40
-#define  StackSize_LEDtask2                      40
-#define  StackSize_LEDtask3                      40
+#define  StackSize_DisplayTask                   40
 
 
 /* ========================================================================= */
@@ -288,30 +277,21 @@
 /* TASK PRIORITIES ========================================================= */
 /* ========================================================================= */
 
-#define  Priority_LEDtask0                       0
-#define  Priority_LEDtask1                       0
-#define  Priority_LEDtask2                       0
-#define  Priority_LEDtask3                       0
+#define  Priority_DisplayTask                    0
 
 
 /* ========================================================================= */
 /* REGISTER USE ============================================================ */
 /* ========================================================================= */
 
-#define  RegisterUse_LEDtask0                    r16_upto_r31
-#define  RegisterUse_LEDtask1                    r16_upto_r31
-#define  RegisterUse_LEDtask2                    r16_upto_r31
-#define  RegisterUse_LEDtask3                    r16_upto_r31
+#define  RegisterUse_DisplayTask                 r16_upto_r31
 
 
 /* ========================================================================= */
 /* REGISTER CHECK ========================================================== */
 /* ========================================================================= */
 
-#define  RegisterCheck_LEDtask0                  registersAll
-#define  RegisterCheck_LEDtask1                  registersAll
-#define  RegisterCheck_LEDtask2                  registersAll
-#define  RegisterCheck_LEDtask3                  registersAll
+#define  RegisterCheck_DisplayTask               registersAll
 
 
 /* ========================================================================= */
