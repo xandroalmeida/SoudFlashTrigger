@@ -1,1 +1,4 @@
 sudo avrdude -v -c usbtiny -patmega8 -U flash:w:./SoudFlashTrigger/Standard/main.hex
+
+To program ATmega8 to work on 8MHz:
+avrdude -v -c usbtiny -patmega8 -U lfuse:w:0xe4:m

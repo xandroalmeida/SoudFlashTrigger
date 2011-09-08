@@ -5,7 +5,7 @@ void display_refresh(void);
 void display_clear(void);
 void display_init(void);
 
-void display_print(Tuint08 n);
+void display_print(Tuint16 n);
 
 /*     0
  *   +---+
@@ -26,6 +26,8 @@ void display_print(Tuint08 n);
 #define CARACTER_7	(BIT0 + BIT1 + BIT2)
 #define CARACTER_8	(BIT0 + BIT1 + BIT2 + BIT3 + BIT4 + BIT5 + BIT6)
 #define CARACTER_9	(BIT0 + BIT1 + BIT2 + BIT3 + BIT5 + BIT6)
+
+#define CARACTER_SPC	(0)
 
 #define CARACTER_A	(BIT0 + BIT1 + BIT2 + BIT4 + BIT5 + BIT6)
 #define CARACTER_B	(BIT2 + BIT3 + BIT4 + BIT5 + BIT6)

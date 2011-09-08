@@ -12,7 +12,7 @@
 
 #define DISPLAY_NUM_DIGITS	4
 
-static const Tuint08 numtbl[16] = {
+PROGMEM static Tuint08 numtbl[127] = {
 		CARACTER_0,
 		CARACTER_1,
 		CARACTER_2,
@@ -61,20 +61,20 @@ void display_init(void)
 	display_clear();
 }
 
-void display_print(Tuint08 n)
+void display_print(Tuint16 n)
 {
-	display_buffer[0] = CARACTER_0;
-	display_buffer[1] = CARACTER_0;
+	display_buffer[0] = pgm_read_byte_near(numtbl + (n >> 12));
+	display_buffer[1] = pgm_read_byte_near(numtbl + (n >> 8));
 	display_buffer[2] = pgm_read_byte_near(numtbl + (n >> 4));
-	display_buffer[3] = pgm_read_byte_near(numtbl + (n && 0x0f));
+	display_buffer[3] = pgm_read_byte_near(numtbl + (n & 0x0f));
 }
 
 void appLoop_DisplayTask(void) {
-	Tuint08 n = 0;
+	Tuint16 n = 0;
 
 	while (true) {
-		display_print(n++);
-		taskDelayFromNow(50);
+		display_print(OSCCAL);
+		taskDelayFromNow(20);
 
 	}
 }
