@@ -6,10 +6,30 @@
  */
 
 #include "femtoos_code.h"
+#include "avr/pgmspace.h"
 #include "display.h"
 #include "common.h"
 
 #define DISPLAY_NUM_DIGITS	4
+
+static const Tuint08 numtbl[16] = {
+		CARACTER_0,
+		CARACTER_1,
+		CARACTER_2,
+		CARACTER_3,
+		CARACTER_4,
+		CARACTER_5,
+		CARACTER_6,
+		CARACTER_7,
+		CARACTER_8,
+		CARACTER_9,
+		CARACTER_A,
+		CARACTER_B,
+		CARACTER_C,
+		CARACTER_D,
+		CARACTER_E,
+		CARACTER_F
+};
 
 static Tuint08 display_buffer[4];
 static Tuint08 current_digit;
@@ -41,19 +61,20 @@ void display_init(void)
 	display_clear();
 }
 
+void display_print(Tuint08 n)
+{
+	display_buffer[0] = CARACTER_0;
+	display_buffer[1] = CARACTER_0;
+	display_buffer[2] = pgm_read_byte_near(numtbl + (n >> 4));
+	display_buffer[3] = pgm_read_byte_near(numtbl + (n && 0x0f));
+}
 
 void appLoop_DisplayTask(void) {
+	Tuint08 n = 0;
+
 	while (true) {
-		display_buffer[0] = CARACTER_0;
-		display_buffer[1] = CARACTER_1;
-		display_buffer[2] = CARACTER_2;
-		display_buffer[3] = CARACTER_3;
-		taskDelayFromNow(20);
-		display_buffer[0] = CARACTER_4;
-		display_buffer[1] = CARACTER_5;
-		display_buffer[2] = CARACTER_6;
-		display_buffer[3] = CARACTER_7;
-		taskDelayFromNow(20);
+		display_print(n++);
+		taskDelayFromNow(50);
 
 	}
 }
