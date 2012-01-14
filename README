@@ -1,3 +1,5 @@
+To compile this you will nedd Eclipse CDT + AVR Eclipse Plugin (http://avr-eclipse.sourceforge.net/wiki/index.php/The_AVR_Eclipse_Plugin0
+
 sudo avrdude -v -c usbtiny -patmega8 -U flash:w:./SoudFlashTrigger/Standard/main.hex
 
 To program ATmega8 to work on 8MHz:

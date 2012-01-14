@@ -1,5 +1,5 @@
 /*
- * SoundFlashTrigger - Copyright (C) 2011 Alexandr Dias de Almeida
+ * SoundFlashTrigger - Copyright (C) 2011 Alexandro Dias de Almeida
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 /* This this the only include needed in your code .*/
 #include "femtoos_code.h"
 #include "common.h"
+#include "display.h"
 
 
 /* Different delays for the blinkers. */
@@ -49,7 +50,6 @@ void appTick08(void) {
 
 }
 
-void HandleAdc(void) __attribute__ ( ( signal ) );
 void HandleAdc(void) {
 	devLedPORT = ~(~devLedPORT + 0x10);
 }

@@ -70,7 +70,7 @@ void display_print(Tuint16 n)
 }
 
 void appLoop_DisplayTask(void) {
-	Tuint16 n = 0;
+//	Tuint16 n = 0;
 
 	while (true) {
 		display_print(OSCCAL);
